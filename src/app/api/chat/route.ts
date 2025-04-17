@@ -1,5 +1,5 @@
-import { openai } from "@ai-sdk/openai";
-import { streamText } from "ai";
+import { openai } from '@ai-sdk/openai';
+import { streamText } from 'ai';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -8,9 +8,9 @@ export async function POST(req: Request) {
   const { messages } = await req.json();
 
   const result = streamText({
-    model: openai("gpt-4o"),
+    model: openai('gpt-4o'),
     system:
-      "You are a helpful assistant that can answer questions and help with tasks.",
+      'You are a helpful assistant that can answer questions and help with tasks.',
     messages,
   });
 
