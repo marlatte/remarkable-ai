@@ -47,7 +47,7 @@
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  --card: var(--color-neutral-200);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
@@ -81,7 +81,7 @@
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: var(--color-neutral-800);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -118,5 +118,72 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.user-card:before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  bottom: -2px;
+  right: -8px;
+  height: 20px;
+  border-right: 20px solid var(--color-blue-500);
+  border-bottom-left-radius: 16px 14px;
+  -webkit-transform: translate(0, -2px);
+}
+
+.user-card:after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  bottom: -2px;
+  right: -56px;
+  width: 26px;
+  height: 20px;
+  background: var(--background);
+  border-bottom-left-radius: 14px;
+  -webkit-transform: translate(-30px, -2px);
+}
+
+.ai-card:before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  bottom: -2px;
+  left: -11px;
+  height: 20px;
+  border-left: 20px solid var(--card);
+  border-bottom-right-radius: 16px 14px;
+  -webkit-transform: translate(0, -2px);
+}
+
+.ai-card::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  bottom: -2px;
+  left: 4px;
+  width: 26px;
+  height: 20px;
+  background: var(--background);
+  border-bottom-right-radius: 16px;
+  -webkit-transform: translate(-30px, -2px);
+}
+
+.animate-pop {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.26, 0.53, 0.74, 1.48);
+  animation-name: animate-pop;
+}
+
+@keyframes animate-pop {
+  0% {
+    opacity: 0;
+    transform: scale(50%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(100%);
   }
 }
