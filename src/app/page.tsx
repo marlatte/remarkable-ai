@@ -1,7 +1,10 @@
 'use client';
 
 import { AICard, UserCard } from '@/components/chat-cards';
+import { LeagueTable } from '@/components/league-table';
+import CollapsibleToolCall from '@/components/tool-call';
 import { useChat } from '@ai-sdk/react';
+import { Fragment } from 'react';
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, status } = useChat({
@@ -31,24 +34,34 @@ export default function Chat() {
             );
           } else {
             return (
-              <AICard key={`${message.id}`}>
-                <p className="text-lg">{message.content}</p>
-                <div>
-                  {message.parts?.map((part, i) => {
-                    switch (part.type) {
-                      case 'tool-invocation':
-                        return (
-                          <pre
+              <Fragment key={`${message.id}`}>
+                <AICard>
+                  <p className="text-lg">{message.content}</p>
+                </AICard>
+                {message.parts?.map((part, i) => {
+                  if (part.type === 'tool-invocation') {
+                    const { state, toolName } = part.toolInvocation;
+                    if (state === 'result' && toolName === 'getStandings') {
+                      const { response } = part.toolInvocation
+                        .result as FootballApiResult;
+
+                      // API response includes a double-wrapped array
+                      const { standings: standingsArray, season } =
+                        response[0].league;
+                      const [standings] = standingsArray;
+                      return (
+                        <Fragment key={`${message.id}-standings`}>
+                          <CollapsibleToolCall
                             key={`${message.id}-${i}`}
-                            className="whitespace-break-spaces"
-                          >
-                            {JSON.stringify(part.toolInvocation, null, 2)}
-                          </pre>
-                        );
+                            {...{ part }}
+                          />
+                          <LeagueTable {...{ standings, season }} />
+                        </Fragment>
+                      );
                     }
-                  })}
-                </div>
-              </AICard>
+                  }
+                })}
+              </Fragment>
             );
           }
         })}
@@ -60,7 +73,7 @@ export default function Chat() {
       )}
       <form onSubmit={handleSubmit}>
         <input
-          className="mt-2 w-full rounded border border-zinc-300 p-2 shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
+          className="mt-2 w-full rounded border border-zinc-300 p-2 shadow-xl placeholder-shown:text-ellipsis dark:border-zinc-800 dark:bg-zinc-900"
           value={input}
           placeholder="Ask about Premier League teams, standings, or fixtures..."
           onChange={handleInputChange}
