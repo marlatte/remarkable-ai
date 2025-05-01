@@ -3,21 +3,24 @@
 import { AICard, UserCard } from '@/components/chat-cards';
 import { LeagueTable } from '@/components/league-table';
 import CollapsibleToolCall from '@/components/tool-call';
-import { useChat } from '@ai-sdk/react';
+import UserInput from '@/components/user-input';
+import { Message, useChat } from '@ai-sdk/react';
 import { Fragment } from 'react';
 
+const initialMessages: Message[] = [
+  {
+    id: 'init',
+    role: 'assistant',
+    content:
+      "Hello! I'm your Premier League analyst for the 2021-2023 seasons. Ask me anything about teams, standings, fixtures, or players from those seasons!",
+  },
+];
+
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, status } = useChat({
-    maxSteps: 5,
+  const { messages, status } = useChat({
+    id: 'chat',
     experimental_throttle: 50, // Throttle updates to prevent React errors
-    initialMessages: [
-      {
-        id: 'init',
-        role: 'assistant',
-        content:
-          "Hello! I'm your Premier League analyst for the 2021-2023 seasons. Ask me anything about teams, standings, fixtures, or players from those seasons!",
-      },
-    ],
+    initialMessages,
   });
 
   const isLoading = status === 'submitted';
@@ -35,12 +38,11 @@ export default function Chat() {
           } else {
             return (
               <Fragment key={`${message.id}`}>
-                <AICard>
-                  <p className="text-lg">{message.content}</p>
-                </AICard>
-                {message.parts?.map((part, i) => {
+                {message.parts?.map((part) => {
                   if (part.type === 'tool-invocation') {
-                    const { state, toolName } = part.toolInvocation;
+                    const generativeComponents = [];
+                    const { state, toolName, args } = part.toolInvocation;
+
                     if (state === 'result' && toolName === 'getStandings') {
                       const { response } = part.toolInvocation
                         .result as FootballApiResult;
@@ -49,18 +51,26 @@ export default function Chat() {
                       const { standings: standingsArray, season } =
                         response[0].league;
                       const [standings] = standingsArray;
-                      return (
-                        <Fragment key={`${message.id}-standings`}>
-                          <CollapsibleToolCall
-                            key={`${message.id}-${i}`}
-                            {...{ part }}
-                          />
-                          <LeagueTable {...{ standings, season }} />
-                        </Fragment>
-                      );
+                      generativeComponents.push({
+                        name: 'League Table',
+                        value: <LeagueTable {...{ standings, season }} />,
+                      });
                     }
+                    return (
+                      <Fragment
+                        key={`${message.id}-${toolName}-${JSON.stringify(args)}`}
+                      >
+                        <CollapsibleToolCall {...{ part }} />
+                        {generativeComponents.map(({ name, value }) => (
+                          <Fragment key={name}>{value}</Fragment>
+                        ))}
+                      </Fragment>
+                    );
                   }
                 })}
+                <AICard>
+                  <p className="text-lg">{message.content}</p>
+                </AICard>
               </Fragment>
             );
           }
@@ -71,15 +81,7 @@ export default function Chat() {
           <p className="animate-pulse">Thinking...</p>
         </AICard>
       )}
-      <form onSubmit={handleSubmit}>
-        <input
-          className="mt-2 w-full rounded border border-zinc-300 p-2 shadow-xl placeholder-shown:text-ellipsis dark:border-zinc-800 dark:bg-zinc-900"
-          value={input}
-          placeholder="Ask about Premier League teams, standings, or fixtures..."
-          onChange={handleInputChange}
-          disabled={isLoading}
-        />
-      </form>
+      <UserInput {...{ initialMessages }} />
       <div className="mt-1 mb-3 text-center text-sm text-neutral-500">
         Data available for English Premier League seasons 2021-2023
       </div>
