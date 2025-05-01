@@ -18,12 +18,12 @@ import {
 } from '@/components/ui/card';
 import Image from 'next/image';
 import { useState } from 'react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 
 type TableType = 'short' | 'full' | 'form';
 
-export function LeagueTable({
+export default function LeagueTable({
   standings,
   season,
 }: {

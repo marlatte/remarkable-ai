@@ -55,7 +55,7 @@ const getStandings = tool({
 });
 
 const searchTeam = tool({
-  description: 'Search for a team by name to get its ID and details',
+  description: 'Search for a team by name to get its Team ID and details',
   parameters: z.object({
     name: z.string().describe('Team name to search for'),
   }),
@@ -65,10 +65,9 @@ const searchTeam = tool({
   },
 });
 
-const getFixtures = tool({
-  description: 'Get fixtures for a specific team, league, and season',
+const getTopScorers = tool({
+  description: 'Get top scorers for a specific league and season',
   parameters: z.object({
-    team: z.number().optional().describe('Team ID'),
     league: z
       .number()
       .default(39)
@@ -78,10 +77,57 @@ const getFixtures = tool({
       .default(2023)
       .describe('Season year (e.g., 2023, 2022, 2021)'),
   }),
-  execute: async ({ team, league, season }) => {
-    const data = await fetchFootballAPI('/fixtures', { team, league, season });
+  execute: async ({ league, season }) => {
+    const data = await fetchFootballAPI('/players/topscorers', {
+      league,
+      season,
+    });
     return data;
   },
 });
 
-export { getStandings, searchTeam, getFixtures };
+// ! Had to be cut from scope due to trouble returning exact fixtures
+// const getPremFixtures = tool({
+//   description: 'Get Fixture IDs to be used with getFixtureInfo',
+//   parameters: z.object({
+//     team: z.number().optional().describe('Team ID'),
+//     league: z
+//       .number()
+//       .default(39)
+//       .describe('League ID (39 for Premier League)'),
+//     season: z
+//       .number()
+//       .default(2023)
+//       .describe('Season year (e.g., 2023, 2022, 2021)'),
+//   }),
+//   execute: async ({ team, league, season }) => {
+//     const data = await fetchFootballAPI('/fixtures', { team, league, season });
+//     return data;
+//   },
+// });
+
+// const getFixtureInfo = tool({
+//   description: 'Get Fixture details for a specific matchup',
+//   parameters: z.object({
+//     ids: z.array(z.number()).nonempty(),
+//     league: z
+//       .number()
+//       .default(39)
+//       .describe('League ID (39 for Premier League)'),
+//     season: z
+//       .number()
+//       .default(2023)
+//       .describe('Season year (e.g., 2023, 2022, 2021)'),
+//   }),
+//   execute: async ({ ids, league, season }) => {
+//     const idString = ids.join('-');
+//     const data = await fetchFootballAPI('/fixtures', {
+//       idString,
+//       league,
+//       season,
+//     });
+//     return data;
+//   },
+// });
+
+export { getStandings, searchTeam, getTopScorers };

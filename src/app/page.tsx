@@ -1,11 +1,12 @@
 'use client';
 
 import { AICard, UserCard } from '@/components/chat-cards';
-import { LeagueTable } from '@/components/league-table';
+import LeagueTable from '@/components/generative-ui/league-table';
+import TopScorers from '@/components/generative-ui/top-scorers';
 import CollapsibleToolCall from '@/components/tool-call';
 import UserInput from '@/components/user-input';
 import { Message, useChat } from '@ai-sdk/react';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 
 const initialMessages: Message[] = [
   {
@@ -23,7 +24,21 @@ export default function Chat() {
     initialMessages,
   });
 
+  // Auto-scroll to bottom when new messages arrive
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (status === 'ready') {
+      scrollToBottom();
+    }
+  }, [messages, status]);
+
   const isLoading = status === 'submitted';
+  const premLogoSrc = 'https://media.api-sports.io/football/leagues/39.png';
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-2">
@@ -43,18 +58,41 @@ export default function Chat() {
                     const generativeComponents = [];
                     const { state, toolName, args } = part.toolInvocation;
 
-                    if (state === 'result' && toolName === 'getStandings') {
-                      const { response } = part.toolInvocation
-                        .result as FootballApiResult;
+                    if (state === 'result') {
+                      switch (toolName) {
+                        case 'getStandings':
+                          {
+                            const { response } = part.toolInvocation
+                              .result as FootballApiStandings;
 
-                      // API response includes a double-wrapped array
-                      const { standings: standingsArray, season } =
-                        response[0].league;
-                      const [standings] = standingsArray;
-                      generativeComponents.push({
-                        name: 'League Table',
-                        value: <LeagueTable {...{ standings, season }} />,
-                      });
+                            // API response includes a double-wrapped array
+                            const { standings: standingsArray, season } =
+                              response[0].league;
+                            const [standings] = standingsArray;
+                            generativeComponents.push({
+                              name: 'getStandings',
+                              value: <LeagueTable {...{ standings, season }} />,
+                            });
+                          }
+                          break;
+
+                        case 'getTopScorers':
+                          {
+                            const { response: topScorers, parameters } = part
+                              .toolInvocation.result as FootballApiTopScorers;
+                            const season = Number(parameters.season);
+
+                            generativeComponents.push({
+                              name: 'getTopScorers',
+                              value: (
+                                <TopScorers
+                                  {...{ season, topScorers, premLogoSrc }}
+                                />
+                              ),
+                            });
+                          }
+                          break;
+                      }
                     }
                     return (
                       <Fragment
@@ -81,6 +119,7 @@ export default function Chat() {
           <p className="animate-pulse">Thinking...</p>
         </AICard>
       )}
+      <div ref={messagesEndRef} />
       <UserInput {...{ initialMessages }} />
       <div className="mt-1 mb-3 text-center text-sm text-neutral-500">
         Data available for English Premier League seasons 2021-2023
