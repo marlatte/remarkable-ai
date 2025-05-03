@@ -1,4 +1,7 @@
 import { Message, useChat } from '@ai-sdk/react';
+import { Button } from './ui/button';
+import { SendHorizonal } from 'lucide-react';
+import { Input } from './ui/input';
 
 export default function UserInput({
   initialMessages,
@@ -12,14 +15,18 @@ export default function UserInput({
   const isLoading = status === 'submitted';
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        className="mt-2 w-full rounded border border-zinc-300 p-2 shadow-xl placeholder-shown:text-ellipsis dark:border-zinc-800 dark:bg-zinc-900"
+    <form onSubmit={handleSubmit} className="mt-2 flex gap-1">
+      <Input
+        className="placeholder-shown:text-ellipsis"
         value={input}
         placeholder="Ask about Premier League teams, standings, or fixtures..."
         onChange={handleInputChange}
         disabled={isLoading}
       />
+      <Button variant="outline" className="size-auto" type="submit">
+        <SendHorizonal className="size-4" />
+        <span className="sr-only">Submit</span>
+      </Button>
     </form>
   );
 }

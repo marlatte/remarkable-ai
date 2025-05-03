@@ -48,7 +48,7 @@ export default function ScrollButton({
       onClick={scrollToBottom}
       tabIndex={showButton ? 0 : -1}
     >
-      <ArrowDown className="size-6 [drop-shadow:5px_5px_5px_black]" />
+      <ArrowDown className="size-6" />
       <span className="sr-only">Scroll to bottom</span>
     </Button>
   );

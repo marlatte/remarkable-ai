@@ -86,48 +86,23 @@ const getTopScorers = tool({
   },
 });
 
-// ! Had to be cut from scope due to trouble returning exact fixtures
-// const getPremFixtures = tool({
-//   description: 'Get Fixture IDs to be used with getFixtureInfo',
-//   parameters: z.object({
-//     team: z.number().optional().describe('Team ID'),
-//     league: z
-//       .number()
-//       .default(39)
-//       .describe('League ID (39 for Premier League)'),
-//     season: z
-//       .number()
-//       .default(2023)
-//       .describe('Season year (e.g., 2023, 2022, 2021)'),
-//   }),
-//   execute: async ({ team, league, season }) => {
-//     const data = await fetchFootballAPI('/fixtures', { team, league, season });
-//     return data;
-//   },
-// });
+const getFixtures = tool({
+  description: 'Get Fixture IDs to be used with getFixtureInfo',
+  parameters: z.object({
+    team: z.number().optional().describe('Team ID'),
+    league: z
+      .number()
+      .default(39)
+      .describe('League ID (39 for Premier League)'),
+    season: z
+      .number()
+      .default(2023)
+      .describe('Season year (e.g., 2023, 2022, 2021)'),
+  }),
+  execute: async ({ team, league, season }) => {
+    const data = await fetchFootballAPI('/fixtures', { team, league, season });
+    return data;
+  },
+});
 
-// const getFixtureInfo = tool({
-//   description: 'Get Fixture details for a specific matchup',
-//   parameters: z.object({
-//     ids: z.array(z.number()).nonempty(),
-//     league: z
-//       .number()
-//       .default(39)
-//       .describe('League ID (39 for Premier League)'),
-//     season: z
-//       .number()
-//       .default(2023)
-//       .describe('Season year (e.g., 2023, 2022, 2021)'),
-//   }),
-//   execute: async ({ ids, league, season }) => {
-//     const idString = ids.join('-');
-//     const data = await fetchFootballAPI('/fixtures', {
-//       idString,
-//       league,
-//       season,
-//     });
-//     return data;
-//   },
-// });
-
-export { getStandings, searchTeam, getTopScorers };
+export { getStandings, searchTeam, getTopScorers, getFixtures };
