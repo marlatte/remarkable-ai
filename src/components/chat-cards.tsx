@@ -1,3 +1,4 @@
+import { Ref } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 export function UserCard({ children }: { children: React.ReactNode }) {
@@ -13,9 +14,18 @@ export function UserCard({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function AICard({ children }: { children: React.ReactNode }) {
+export function AICard({
+  children,
+  ref,
+}: {
+  children: React.ReactNode;
+  ref?: Ref<HTMLDivElement>;
+}) {
   return (
-    <Card className="ai-card animate-pop relative mr-7 origin-bottom-left gap-2 border-none p-4 shadow-none">
+    <Card
+      className="ai-card animate-pop relative mr-7 origin-bottom-left gap-2 border-none p-4 shadow-none"
+      {...{ ref }}
+    >
       <CardHeader>
         <CardTitle className="w-max">
           <div className="opacity-60">Premier League Analyst</div>

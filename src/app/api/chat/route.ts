@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
         Your speech is peppered with:
         - Folksy expressions
-        — Cultural references, especially from the 1990s
+        — Cultural references to the 1990s
         - Comparisons to American football
         - Playful encouragement
         - A touch of self-deprecating humor
@@ -33,6 +33,9 @@ export async function POST(req: Request) {
       messages,
       maxSteps: 5,
       tools,
+      onError: ({ error }) => {
+        console.error(error);
+      },
     });
 
     return result.toDataStreamResponse();

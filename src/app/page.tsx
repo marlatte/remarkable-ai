@@ -3,6 +3,7 @@
 import { AICard, UserCard } from '@/components/chat-cards';
 import LeagueTable from '@/components/generative-ui/league-table';
 import TopScorers from '@/components/generative-ui/top-scorers';
+import ScrollButton from '@/components/scroll-btn';
 import CollapsibleToolCall from '@/components/tool-call';
 import UserInput from '@/components/user-input';
 import { Message, useChat } from '@ai-sdk/react';
@@ -25,15 +26,16 @@ export default function Chat() {
   });
 
   // Auto-scroll to bottom when new messages arrive
+  const lastMessageRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToLastMessage = () => {
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
     if (status === 'ready') {
-      scrollToBottom();
+      scrollToLastMessage();
     }
   }, [messages, status]);
 
@@ -42,8 +44,9 @@ export default function Chat() {
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-2">
+      {messagesEndRef && <ScrollButton {...{ messagesEndRef }} />}
       <div className="mb-auto flex flex-1 flex-col gap-4">
-        {messages.map((message) => {
+        {messages.map((message, index) => {
           if (message.role === 'user') {
             return (
               <UserCard key={message.id}>
@@ -53,12 +56,20 @@ export default function Chat() {
           } else {
             return (
               <Fragment key={`${message.id}`}>
+                <AICard
+                  ref={
+                    index === messages.length - 1 ? lastMessageRef : undefined
+                  }
+                >
+                  <p className="text-lg">{message.content}</p>
+                </AICard>
                 {message.parts?.map((part) => {
                   if (part.type === 'tool-invocation') {
                     const generativeComponents = [];
-                    const { state, toolName, args } = part.toolInvocation;
+                    const { state, toolName, args, toolCallId } =
+                      part.toolInvocation;
 
-                    if (state === 'result') {
+                    if (state === 'result' && status === 'ready') {
                       switch (toolName) {
                         case 'getStandings':
                           {
@@ -96,7 +107,7 @@ export default function Chat() {
                     }
                     return (
                       <Fragment
-                        key={`${message.id}-${toolName}-${JSON.stringify(args)}`}
+                        key={`${toolCallId}-${toolName}-${JSON.stringify(args)}`}
                       >
                         <CollapsibleToolCall {...{ part }} />
                         {generativeComponents.map(({ name, value }) => (
@@ -106,9 +117,6 @@ export default function Chat() {
                     );
                   }
                 })}
-                <AICard>
-                  <p className="text-lg">{message.content}</p>
-                </AICard>
               </Fragment>
             );
           }
