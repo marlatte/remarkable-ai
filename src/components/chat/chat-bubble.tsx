@@ -1,7 +1,7 @@
 import { Ref } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
-export function UserCard({ children }: { children: React.ReactNode }) {
+function UserCard({ children }: { children: React.ReactNode }) {
   return (
     <Card className="user-card animate-pop relative mr-2 ml-7 origin-bottom-right gap-1 self-end border-none bg-blue-500 p-3 text-white shadow-none">
       <CardHeader className="flex justify-end">
@@ -14,7 +14,7 @@ export function UserCard({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function AICard({
+function AICard({
   children,
   ref,
 }: {
@@ -35,3 +35,8 @@ export function AICard({
     </Card>
   );
 }
+
+export function ChatBubble() {}
+
+ChatBubble.User = UserCard;
+ChatBubble.AI = AICard;

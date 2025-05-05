@@ -1,13 +1,10 @@
-import { Message, useChat } from '@ai-sdk/react';
-import { Button } from './ui/button';
-import { SendHorizonal } from 'lucide-react';
-import { Input } from './ui/input';
+import { useChat } from '@ai-sdk/react';
+import { Button } from '../ui/button';
+import { SendHorizontal } from 'lucide-react';
+import { Input } from '../ui/input';
+import { initialMessages } from '@/lib/init-messages';
 
-export default function UserInput({
-  initialMessages,
-}: {
-  initialMessages: Message[];
-}) {
+export default function UserInput() {
   const { input, handleInputChange, handleSubmit, status } = useChat({
     id: 'chat',
     initialMessages,
@@ -24,7 +21,7 @@ export default function UserInput({
         disabled={isLoading}
       />
       <Button variant="outline" className="size-auto" type="submit">
-        <SendHorizonal className="size-4" />
+        <SendHorizontal className="size-4" />
         <span className="sr-only">Submit</span>
       </Button>
     </form>
