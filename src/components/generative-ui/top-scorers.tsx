@@ -15,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
+import { PlayerStatsResponse } from '@/lib/types/football';
 
 const TopScorers = memo(function TopScorers({
   topScorers,

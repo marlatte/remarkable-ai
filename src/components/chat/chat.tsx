@@ -5,6 +5,10 @@ import { useChat } from '@ai-sdk/react';
 import { initialMessages } from '@/lib/init-messages';
 import TopScorers from '../generative-ui/top-scorers';
 import LeagueTable from '../generative-ui/league-table';
+import {
+  FootballApiStandings,
+  FootballApiTopScorers,
+} from '@/lib/types/football';
 
 export default function Chat() {
   const { messages, status } = useChat({
@@ -25,7 +29,10 @@ export default function Chat() {
     }
   }, [messages, status]);
 
-  const isLoading = status === 'submitted';
+  const isLoading =
+    status === 'submitted' ||
+    (status === 'streaming' &&
+      messages[messages.length - 1].content.length < 1);
   const premLogoSrc = 'https://media.api-sports.io/football/leagues/39.png';
 
   return (
@@ -39,9 +46,11 @@ export default function Chat() {
           </ChatBubble.User>
         ) : (
           <Fragment key={`${message.id}`}>
-            <ChatBubble.AI ref={isLastMessage ? lastMessageRef : undefined}>
-              <p className="text-lg">{message.content}</p>
-            </ChatBubble.AI>
+            {message.content.length > 1 && (
+              <ChatBubble.AI ref={isLastMessage ? lastMessageRef : undefined}>
+                <p className="text-lg">{message.content}</p>
+              </ChatBubble.AI>
+            )}
             {message.parts?.map((part) => {
               if (part.type === 'tool-invocation' && status === 'ready') {
                 const generativeComponents = [];
@@ -55,10 +64,12 @@ export default function Chat() {
                         const { response } = part.toolInvocation
                           .result as FootballApiStandings;
 
-                        // API response includes a double-wrapped array
-                        const { standings: standingsArray, season } =
-                          response[0].league;
-                        const [standings] = standingsArray;
+                        const [{ league }] = response;
+                        const {
+                          standings: [standings],
+                          season,
+                        } = league;
+
                         generativeComponents.push({
                           name: 'getStandings',
                           value: <LeagueTable {...{ standings, season }} />,

@@ -1,3 +1,9 @@
+import {
+  FootballApiFixtures,
+  FootballApiSearchTeams,
+  FootballApiStandings,
+  FootballApiTopScorers,
+} from '@/lib/types/football';
 import { tool } from 'ai';
 import { z } from 'zod';
 
@@ -49,7 +55,10 @@ const getStandings = tool({
       .describe('Season year (e.g., 2023, 2022, 2021)'),
   }),
   execute: async ({ league, season }) => {
-    const data = await fetchFootballAPI('/standings', { league, season });
+    const data = (await fetchFootballAPI('/standings', {
+      league,
+      season,
+    })) as FootballApiStandings;
     return data;
   },
 });
@@ -60,7 +69,9 @@ const searchTeam = tool({
     name: z.string().describe('Team name to search for'),
   }),
   execute: async ({ name }) => {
-    const data = await fetchFootballAPI('/teams', { search: name });
+    const data = (await fetchFootballAPI('/teams', {
+      search: name,
+    })) as FootballApiSearchTeams;
     return data;
   },
 });
@@ -78,18 +89,23 @@ const getTopScorers = tool({
       .describe('Season year (e.g., 2023, 2022, 2021)'),
   }),
   execute: async ({ league, season }) => {
-    const data = await fetchFootballAPI('/players/topscorers', {
+    const data = (await fetchFootballAPI('/players/topscorers', {
       league,
       season,
-    });
+    })) as FootballApiTopScorers;
     return data;
   },
 });
 
 const getFixtures = tool({
-  description: 'Get Fixture IDs to be used with getFixtureInfo',
+  description: 'Get details of a specific match or set of matches.',
   parameters: z.object({
     team: z.number().optional().describe('Team ID'),
+    ids: z
+      .array(z.number())
+      .optional()
+      .or(z.number())
+      .describe('Fixture IDs to get info for a specific match.'),
     league: z
       .number()
       .default(39)
@@ -100,7 +116,11 @@ const getFixtures = tool({
       .describe('Season year (e.g., 2023, 2022, 2021)'),
   }),
   execute: async ({ team, league, season }) => {
-    const data = await fetchFootballAPI('/fixtures', { team, league, season });
+    const data = (await fetchFootballAPI('/fixtures', {
+      team,
+      league,
+      season,
+    })) as FootballApiFixtures;
     return data;
   },
 });
