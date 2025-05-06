@@ -7,14 +7,21 @@ import debounce from 'lodash/debounce';
 import { cn } from '@/lib/utils';
 
 export default function ScrollButton({
-  messagesEndRef,
+  inputRef,
 }: {
-  messagesEndRef: RefObject<HTMLDivElement | null>;
+  inputRef: RefObject<HTMLDivElement | null>;
 }) {
   const [showButton, setShowButton] = useState(false);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToInput = () => {
+    inputRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center',
+    });
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 800);
     setShowButton(false);
   };
 
@@ -23,7 +30,7 @@ export default function ScrollButton({
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
     setShowButton(
-      scrollPosition + windowHeight < documentHeight - 10 &&
+      scrollPosition + windowHeight < documentHeight - 60 &&
         documentHeight !== windowHeight,
     );
   };
@@ -45,7 +52,7 @@ export default function ScrollButton({
           'translate-y-0 opacity-100': showButton,
         },
       )}
-      onClick={scrollToBottom}
+      onClick={scrollToInput}
       tabIndex={showButton ? 0 : -1}
     >
       <ArrowDown className="size-6" />

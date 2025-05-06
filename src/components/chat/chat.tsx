@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment, RefObject, useEffect, useRef } from 'react';
 import CollapsibleToolCall from '../tool-call';
 import { ChatBubble } from './chat-bubble';
 import { useChat } from '@ai-sdk/react';
@@ -18,21 +18,22 @@ export default function Chat() {
   });
 
   const lastMessageRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef<HTMLDivElement>(null);
 
-  const scrollToLastMessage = () => {
-    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToRef = (ref: RefObject<HTMLDivElement | null>) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  useEffect(() => {
-    if (status === 'ready') {
-      scrollToLastMessage();
-    }
-  }, [messages, status]);
 
   const isLoading =
     status === 'submitted' ||
     (status === 'streaming' &&
       messages[messages.length - 1].content.length < 1);
+
+  useEffect(() => {
+    if (status === 'ready') scrollToRef(lastMessageRef);
+    if (isLoading) scrollToRef(loadingRef);
+  }, [isLoading, messages, status]);
+
   const premLogoSrc = 'https://media.api-sports.io/football/leagues/39.png';
 
   return (
@@ -111,7 +112,7 @@ export default function Chat() {
         );
       })}
       {isLoading && (
-        <ChatBubble.AI>
+        <ChatBubble.AI ref={loadingRef}>
           <p className="animate-pulse">Thinking...</p>
         </ChatBubble.AI>
       )}
