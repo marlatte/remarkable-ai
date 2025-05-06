@@ -1,4 +1,5 @@
 import { FixtureIdResponse } from './fixtures';
+import { Lineup } from './lineups';
 import { StandingsResponse } from './standings';
 import { SearchTeamResponse } from './team-search';
 export { PlayerStatsResponse } from './top-scorers';
@@ -40,9 +41,23 @@ type FootballApiFixtures = {
   response: FixtureIdResponse[];
 };
 
+type FootballApiHead2Head = {
+  get: 'fixtures/headtohead';
+  parameters: { h2h: string };
+  response: FixtureIdResponse[];
+};
+
+type FootballApiLineups = {
+  get: 'fixtures/lineups';
+  parameters: { fixture: string };
+  response: Lineup[];
+};
+
 export {
   FootballApiSearchTeams,
   FootballApiStandings,
   FootballApiTopScorers,
   FootballApiFixtures,
+  FootballApiHead2Head,
+  FootballApiLineups,
 };
