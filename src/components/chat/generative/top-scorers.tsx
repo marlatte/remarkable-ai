@@ -7,14 +7,14 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '../ui/accordion';
+} from '../../ui/accordion';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '../ui/card';
+} from '../../ui/card';
 import { PlayerStatsResponse } from '@/lib/types/football';
 
 const TopScorers = memo(function TopScorers({

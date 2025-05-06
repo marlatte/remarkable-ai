@@ -14,8 +14,8 @@ export type Lineup = {
     photo: string;
   };
   formation: string;
-  startXI: Array<PlayerWrapper & { grid: string }>;
-  substitutes: Array<PlayerWrapper>;
+  startXI: { player: StartingPlayer }[];
+  substitutes: { player: Substitute }[];
 };
 
 export type TeamColor = {
@@ -24,11 +24,11 @@ export type TeamColor = {
   border: string;
 };
 
-export type PlayerWrapper = {
-  player: {
-    id: number;
-    name: string;
-    number: number;
-    pos: 'G' | 'D' | 'M' | 'F';
-  };
+type Player = {
+  id: number;
+  name: string;
+  number: number;
+  pos: 'G' | 'D' | 'M' | 'F';
 };
+export type StartingPlayer = Player & { grid: string };
+export type Substitute = Player & { grid: null };

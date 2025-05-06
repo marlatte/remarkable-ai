@@ -3,8 +3,8 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from './ui/collapsible';
-import { Button } from './ui/button';
+} from '../../ui/collapsible';
+import { Button } from '../../ui/button';
 import { ToolInvocationUIPart } from '@ai-sdk/ui-utils';
 
 export default function CollapsibleToolCall({

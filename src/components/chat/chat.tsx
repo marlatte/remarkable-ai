@@ -1,14 +1,8 @@
 import { Fragment, RefObject, useEffect, useRef } from 'react';
-import CollapsibleToolCall from '../tool-call';
 import { ChatBubble } from './chat-bubble';
 import { useChat } from '@ai-sdk/react';
 import { initialMessages } from '@/lib/init-messages';
-import TopScorers from '../generative-ui/top-scorers';
-import LeagueTable from '../generative-ui/league-table';
-import {
-  FootballApiStandings,
-  FootballApiTopScorers,
-} from '@/lib/types/football';
+import GenerativeComponents from './generative';
 
 export default function Chat() {
   const { messages, status } = useChat({
@@ -34,8 +28,6 @@ export default function Chat() {
     if (isLoading) scrollToRef(loadingRef);
   }, [isLoading, messages, status]);
 
-  const premLogoSrc = 'https://media.api-sports.io/football/leagues/39.png';
-
   return (
     <div className="mb-auto flex flex-1 flex-col gap-4">
       {messages.map((message, index) => {
@@ -52,62 +44,7 @@ export default function Chat() {
                 <p className="text-lg">{message.content}</p>
               </ChatBubble.AI>
             )}
-            {message.parts?.map((part) => {
-              if (part.type === 'tool-invocation' && status === 'ready') {
-                const generativeComponents = [];
-                const { state, toolName, args, toolCallId } =
-                  part.toolInvocation;
-
-                if (state === 'result') {
-                  switch (toolName) {
-                    case 'getStandings':
-                      {
-                        const { response } = part.toolInvocation
-                          .result as FootballApiStandings;
-
-                        const [{ league }] = response;
-                        const {
-                          standings: [standings],
-                          season,
-                        } = league;
-
-                        generativeComponents.push({
-                          name: 'getStandings',
-                          value: <LeagueTable {...{ standings, season }} />,
-                        });
-                      }
-                      break;
-
-                    case 'getTopScorers':
-                      {
-                        const { response: topScorers, parameters } = part
-                          .toolInvocation.result as FootballApiTopScorers;
-                        const season = Number(parameters.season);
-
-                        generativeComponents.push({
-                          name: 'getTopScorers',
-                          value: (
-                            <TopScorers
-                              {...{ season, topScorers, premLogoSrc }}
-                            />
-                          ),
-                        });
-                      }
-                      break;
-                  }
-                }
-                return (
-                  <Fragment
-                    key={`${toolCallId}-${toolName}-${JSON.stringify(args)}`}
-                  >
-                    <CollapsibleToolCall {...{ part }} />
-                    {generativeComponents.map(({ name, value }) => (
-                      <Fragment key={name}>{value}</Fragment>
-                    ))}
-                  </Fragment>
-                );
-              }
-            })}
+            <GenerativeComponents chatStatus={status} {...{ message }} />
           </Fragment>
         );
       })}

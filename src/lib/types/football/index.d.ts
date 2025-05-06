@@ -1,9 +1,9 @@
 import { FixtureIdResponse } from './fixtures';
-import { Lineup } from './lineups';
 import { StandingsResponse } from './standings';
 import { SearchTeamResponse } from './team-search';
 export { PlayerStatsResponse } from './top-scorers';
 export { Standing } from './standings';
+export { Lineup, TeamColor, StartingPlayer, Substitute } from './lineups';
 
 type FootballApiResponse = {
   parameters: {
