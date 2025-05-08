@@ -9,7 +9,7 @@ export default function Page() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-2">
+    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-2 text-pretty">
       {inputRef && <ScrollButton {...{ inputRef }} />}
       <Chat />
       <UserInput {...{ inputRef }} />

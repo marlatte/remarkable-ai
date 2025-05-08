@@ -3,12 +3,16 @@ import { ChatBubble } from './chat-bubble';
 import { useChat } from '@ai-sdk/react';
 import { initialMessages } from '@/lib/init-messages';
 import GenerativeComponents from './generative';
+import ErrorMsg from '../error-msg';
 
 export default function Chat() {
-  const { messages, status } = useChat({
+  const { messages, status, error, reload } = useChat({
     id: 'chat',
     experimental_throttle: 50, // Throttle updates to prevent React errors
     initialMessages,
+    onError(err) {
+      console.error(err);
+    },
   });
 
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -53,6 +57,7 @@ export default function Chat() {
           <p className="animate-pulse">Thinking...</p>
         </ChatBubble.AI>
       )}
+      {error && <ErrorMsg {...{ reload }} />}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { Ref } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { cn } from '@/lib/utils';
 
 function UserCard({ children }: { children: React.ReactNode }) {
   return (
@@ -17,13 +18,15 @@ function UserCard({ children }: { children: React.ReactNode }) {
 function AICard({
   children,
   ref,
+  className,
 }: {
   children: React.ReactNode;
   ref?: Ref<HTMLDivElement>;
+  className?: string | undefined;
 }) {
   return (
     <Card
-      className="ai-card animate-pop relative mr-7 origin-bottom-left scroll-m-16 gap-2 border-none p-4 shadow-none"
+      className="ai-card animate-pop relative mr-7 origin-bottom-left scroll-m-16 gap-2 self-start border-none p-4 shadow-none"
       {...{ ref }}
     >
       <CardHeader>
@@ -33,7 +36,7 @@ function AICard({
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0">{children}</CardContent>
+      <CardContent className={cn('p-0', className)}>{children}</CardContent>
     </Card>
   );
 }
