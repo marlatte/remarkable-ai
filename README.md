@@ -1,36 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Remarkable AI
 
-## Getting Started
+A new Premier League analyst joins the conversation. He's just a few years out of date.
 
-First, run the development server:
+👉 <a href="https://remarkable-ai.vercel.app/" target="_blank">Live Preview</a> 👈
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Objective
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The goal of this project was to design and ship an AI-powered assistant end-to-end — from model prompting and data sourcing to frontend interaction and UX polish.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Sources
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+I used [Vercel's AI SDK](https://ai-sdk.dev/docs/introduction) with OpenAI's `gpt-4o` as provider and model, respectively.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Football data is gathered from [Api-Football](https://www.api-football.com/documentation-v3), though I had to limit the scope of this assistant to the Premier League from 2021-2023 due to the restrictions of the API's free tier and limitations of time and complexity of handling multiple leagues.
