@@ -16,8 +16,8 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: 'AI Chat',
-  description: 'Basic AI chat app',
+  title: 'Remarkable AI',
+  description: 'Chat with Ted Lasso about the Premier League!',
 };
 
 export default function RootLayout({
