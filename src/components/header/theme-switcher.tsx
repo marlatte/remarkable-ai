@@ -13,7 +13,7 @@ export default function ThemeSwitcher() {
     <Button
       variant="outline"
       size="icon"
-      className="focus-visible:ring-pink-400 dark:focus-visible:ring-pink-500"
+      className="group from-background to-muted hover:text-background bg-linear-to-br text-lg font-semibold transition hover:from-yellow-300 hover:to-pink-500 focus-visible:ring-pink-400 dark:focus-visible:ring-pink-500"
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
     >
       <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />

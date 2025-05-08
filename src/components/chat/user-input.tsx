@@ -37,7 +37,7 @@ export default function UserInput({
       />
       <Button
         variant="outline"
-        className="size-auto focus-visible:ring-pink-400 dark:focus-visible:ring-pink-500"
+        className="group from-background to-muted hover:text-background size-auto bg-linear-to-br text-lg font-semibold transition hover:from-yellow-300 hover:to-pink-500 focus-visible:ring-pink-400 dark:focus-visible:ring-pink-500"
         type="submit"
       >
         <SendHorizontal className="size-4" />

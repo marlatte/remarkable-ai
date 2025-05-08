@@ -14,7 +14,11 @@ export function Menu() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button
+          variant="outline"
+          size="icon"
+          className="group from-background to-muted hover:text-background bg-linear-to-br text-lg font-semibold transition hover:from-yellow-300 hover:to-pink-500 focus-visible:ring-pink-400 dark:focus-visible:ring-pink-700"
+        >
           <span className="sr-only">Menu</span>
           <MenuIcon />
         </Button>
