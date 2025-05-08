@@ -15,7 +15,11 @@ export default function CollapsibleToolCall({
   return (
     <Collapsible>
       <CollapsibleTrigger asChild>
-        <Button variant="ghost" size="sm" className="flex gap-3">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex gap-3 focus-visible:ring-pink-400 dark:focus-visible:ring-pink-500"
+        >
           <p>Show Tool Call</p>
           <ChevronsUpDown className="h-4 w-4" />
         </Button>

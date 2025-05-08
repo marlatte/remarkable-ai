@@ -20,7 +20,7 @@ function PlayerListItem({
   return (
     <div className="bg-muted/20 flex items-center gap-3">
       <div
-        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold"
+        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold shadow-sm"
         style={{
           backgroundColor: primaryColor,
           color: numberColor,

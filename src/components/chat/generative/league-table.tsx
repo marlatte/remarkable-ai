@@ -92,13 +92,11 @@ export default function LeagueTable({
   };
 
   return (
-    <Card className="ai-card animate-pop @container relative mr-7 origin-bottom-left gap-4 border-none p-4 shadow-none">
+    <Card className="ai-card animate-pop @container relative mr-7 origin-bottom-left gap-4 border-none p-4 font-(family-name:--font-archivo) shadow-none">
       <CardHeader className="grid gap-4">
         <div className="flex flex-row items-center justify-between">
           <CardTitle>Premier League Table</CardTitle>
-          <CardDescription>
-            <p>{season}</p>
-          </CardDescription>
+          <CardDescription className="text-base">{season}</CardDescription>
         </div>
         <div className="bg-muted flex gap-2 rounded-full border p-1 dark:border-neutral-600">
           <TableTypeButton value="short" />

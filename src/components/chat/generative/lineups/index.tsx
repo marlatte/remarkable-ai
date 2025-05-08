@@ -20,7 +20,7 @@ export default function LineupDisplay({ lineups }: { lineups: Lineup[] }) {
   // TODO re-style as opposing teams on a pitch
 
   return (
-    <Card className="ai-card animate-pop @container relative mr-7 origin-bottom-left gap-4 border-none p-0 shadow-none">
+    <Card className="ai-card animate-pop @container relative mr-7 origin-bottom-left gap-4 border-none p-0 font-(family-name:--font-archivo) shadow-none">
       <Tabs defaultValue="formation" className="w-full">
         <TabsList className="h-auto w-full p-4 pb-0">
           <TabsTrigger value="formation">Formation</TabsTrigger>
@@ -77,7 +77,10 @@ export default function LineupDisplay({ lineups }: { lineups: Lineup[] }) {
 
         <TabsContent value="list" className="flex flex-wrap gap-4 p-2">
           {lineups.map((lineup) => (
-            <Card key={`list-${lineup.team.id}`} className="flex-1 shrink-0">
+            <Card
+              key={`list-${lineup.team.id}`}
+              className="flex-1 shrink-0 shadow-none"
+            >
               <CardHeader className="bg-muted/20">
                 <div className="flex items-center gap-4">
                   <div className="relative h-12 w-12">

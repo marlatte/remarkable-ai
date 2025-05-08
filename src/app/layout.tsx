@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Honk } from 'next/font/google';
+import { Geist, Archivo } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import Header from '@/components/header';
@@ -9,14 +9,10 @@ const geistSans = Geist({
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const archivo = Archivo({
+  variable: '--font-archivo',
   subsets: ['latin'],
-});
-
-const honk = Honk({
-  variable: '--font-honk',
-  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -32,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${honk.variable} flex h-dvh flex-col antialiased`}
+        className={`${geistSans.variable} ${archivo.variable} flex h-dvh flex-col antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -41,7 +37,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <main className="flex flex-1 flex-col px-4">{children}</main>
+          <main className="mt-20 flex flex-1 flex-col px-4">{children}</main>
         </ThemeProvider>
       </body>
     </html>

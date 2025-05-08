@@ -46,7 +46,7 @@ export default function ScrollButton({
     <Button
       variant="outline"
       className={cn(
-        'fixed bottom-4 left-[calc(50%-36px/2)] z-10 size-9 rounded-full shadow-md backdrop-blur-sm delay-0 duration-300 ease-in-out',
+        'fixed bottom-4 left-[calc(50%-36px/2)] z-10 size-9 rounded-full shadow-md backdrop-blur-sm delay-0 duration-300 ease-in-out focus-visible:ring-pink-400 dark:focus-visible:ring-pink-500',
         {
           'pointer-events-none translate-y-20 opacity-0': !showButton,
           'translate-y-0 opacity-100': showButton,

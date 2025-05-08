@@ -35,7 +35,11 @@ export default function UserInput({
         onFocus={scrollToInput}
         ref={inputRef}
       />
-      <Button variant="outline" className="size-auto" type="submit">
+      <Button
+        variant="outline"
+        className="size-auto focus-visible:ring-pink-400 dark:focus-visible:ring-pink-500"
+        type="submit"
+      >
         <SendHorizontal className="size-4" />
         <span className="sr-only">Submit</span>
       </Button>

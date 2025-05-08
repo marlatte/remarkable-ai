@@ -18,7 +18,7 @@ function PlayerCircle({
   return (
     <div className="relative flex flex-col items-center gap-1">
       <div
-        className="flex size-8 items-center justify-center rounded-full text-sm font-bold sm:size-10 sm:text-base"
+        className="flex size-8 items-center justify-center rounded-full text-sm font-bold shadow-sm sm:size-10 sm:text-base"
         style={{
           backgroundColor: primaryColor,
           color: numberColor,
