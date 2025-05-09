@@ -7,7 +7,7 @@ import { UIMessage } from 'ai';
 import LeagueTable from './league-table';
 import TopScorers from './top-scorers';
 import { Fragment } from 'react';
-import CollapsibleToolCall from './tool-call';
+// import CollapsibleToolCall from './tool-call';
 import LineupDisplay from './lineups';
 
 export default function GenerativeComponents({
@@ -75,7 +75,7 @@ export default function GenerativeComponents({
       }
       return (
         <Fragment key={`${toolCallId}-${toolName}-${JSON.stringify(args)}`}>
-          <CollapsibleToolCall {...{ part }} />
+          {/* <CollapsibleToolCall {...{ part }} /> */}
           {generativeComponents.map(({ name, value }) => (
             <Fragment key={name}>{value}</Fragment>
           ))}
