@@ -16,6 +16,7 @@ import {
   CardTitle,
 } from '../../ui/card';
 import { PlayerStatsResponse } from '@/lib/types/football';
+import { Badge } from '@/components/ui/badge';
 
 const TopScorers = memo(function TopScorers({
   topScorers,
@@ -30,9 +31,9 @@ const TopScorers = memo(function TopScorers({
   return (
     <Card className="ai-card animate-pop @container relative mr-7 origin-bottom-left gap-4 border-none p-4 shadow-none">
       <CardHeader className="grid gap-4">
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center justify-between gap-2">
           <CardTitle className="flex items-center gap-2">
-            <div className="relative size-7 overflow-hidden rounded-sm border border-gray-200 bg-white shadow-md">
+            <div className="relative size-7 shrink-0 overflow-hidden rounded-sm border border-gray-200 bg-white shadow-md">
               <Image
                 src={premLogoSrc}
                 alt="Premier League Logo"
@@ -40,14 +41,16 @@ const TopScorers = memo(function TopScorers({
                 objectFit="cover"
               />
             </div>
-            <span className="text-lg">Premier League Top Scorers</span>
+            <span className="text-lg leading-none text-balance">
+              Premier League Top Scorers
+            </span>
           </CardTitle>
-          <CardDescription className="text-card-foreground text-base">
+          <CardDescription className="text-card-foreground sm:text-base">
             <p>{season}</p>
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="grid gap-4 pt-4">
         {topScorers.map(({ player, statistics }, index) => (
           <PlayerCard
             key={player.id}
@@ -69,68 +72,72 @@ function PlayerCard({ player, statistics, rank }: PlayerCardProps) {
   const fallback = 'N/A';
 
   return (
-    <div className="mx-auto w-full max-w-lg rounded-2xl bg-white p-4 shadow-lg transition-all duration-300 hover:shadow-xl sm:p-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-        <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-gray-200 sm:h-28 sm:w-28">
-          {player.photo ? (
-            <Image
-              src={player.photo}
-              alt={player.name}
-              layout="fill"
-              objectFit="cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500">
-              No Image
-            </div>
-          )}
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-2 rounded-2xl bg-white p-4 shadow-lg transition-all duration-300 hover:shadow-xl sm:p-6">
+      <div className="flex gap-4 sm:items-center">
+        <div className="flex flex-wrap gap-4">
+          <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-gray-200 sm:h-28 sm:w-28">
+            {player.photo ? (
+              <Image
+                src={player.photo}
+                alt={player.name}
+                layout="fill"
+                objectFit="cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500">
+                No Image
+              </div>
+            )}
+          </div>
+          <div className="">
+            <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
+              {player.name ?? 'Unknown Player'}
+            </h2>
+            <p className="max-w-40 text-xs text-gray-600 sm:max-w-max sm:text-sm">
+              {player.firstname} {player.lastname}
+            </p>
+            <p className="text-sm text-gray-600 sm:text-base">
+              {player.nationality ?? fallback} &bull; Age:{' '}
+              {player.age ?? fallback}
+            </p>
+            <p className="text-sm text-gray-500 sm:text-base">
+              {player.height ?? fallback} &bull; {player.weight ?? fallback}
+            </p>
+            <p className="text-sm text-gray-500 sm:text-base">
+              {stat.games?.position ?? 'Footballer'}
+            </p>
+          </div>
         </div>
-
-        <div className="flex-1">
-          <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
-            {player.name ?? 'Unknown Player'}
-          </h2>
-          <p className="text-sm text-gray-600 sm:text-base">
-            {player.nationality ?? fallback} &bull; Age:{' '}
-            {player.age ?? fallback}
-          </p>
-          <p className="text-sm text-gray-500 sm:text-base">
-            {player.height ?? fallback} &bull; {player.weight ?? fallback}
-          </p>
-        </div>
-        <p className="grid size-9 place-content-center self-start rounded-full bg-neutral-400 text-lg font-bold text-white">
+        <p className="ml-auto grid size-9 shrink-0 place-content-center self-start rounded-full bg-neutral-400 text-lg font-bold text-white">
           {rank}
         </p>
       </div>
 
       {stat ? (
-        <div className="mt-4 border-t pt-4 text-sm text-gray-700">
-          <div className="mb-3 flex items-center gap-2">
-            {stat.team.logo && (
-              <Image
-                src={stat.team.logo}
-                alt={stat.team.name}
-                width={24}
-                height={24}
-              />
-            )}
-            <span className="font-medium">{stat.team.name ?? fallback}</span>
+        <div className="text-sm text-gray-700">
+          <div className="flex">
+            <Badge className="mb-2 gap-2 text-sm">
+              {stat.team.logo && (
+                <Image
+                  src={stat.team.logo}
+                  alt={stat.team.name}
+                  width={24}
+                  height={24}
+                  className="h-6 w-auto"
+                />
+              )}
+              <span className="font-medium">{stat.team.name ?? fallback}</span>
+            </Badge>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
-            <Stat label="Goals" value={stat.goals?.total} />
-            <Stat label="Assists" value={stat.goals?.assists} />
-            <Stat
-              label="Shots"
-              value={
-                stat.shots?.total != null && stat.shots?.on != null
-                  ? `${stat.shots.total} (${stat.shots.on} on)`
-                  : fallback
-              }
-            />
-            <Stat label="Games" value={stat.games?.appearences} />
+          <div className="grid gap-x-4 gap-y-2 min-[450px]:grid-cols-2">
+            <Stat label="Appearances" value={stat.games?.appearences} />
+            <Stat label="Starts" value={stat.games?.lineups} />
             <Stat label="Minutes" value={stat.games?.minutes} />
-            <Stat label="Position" value={stat.games?.position} />
+            <Stat
+              label="Rating"
+              value={Number(stat.games?.rating).toFixed(2)}
+            />
           </div>
 
           <Accordion type="single" collapsible className="mt-4">
@@ -140,13 +147,11 @@ function PlayerCard({ player, statistics, rank }: PlayerCardProps) {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="mt-4 space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <StatsGroup title="Game Stats">
-                    <Stat label="Lineups" value={stat.games?.lineups} />
-                    <Stat label="Rating" value={stat.games?.rating} />
-                    <Stat
-                      label="Captain"
-                      value={stat.games?.captain ? 'Yes' : 'No'}
-                    />
+                  <StatsGroup title="Attacking">
+                    <Stat label="Goals" value={stat.goals?.total} />
+                    <Stat label="Assists" value={stat.goals?.assists} />
+                    <Stat label="Shots" value={stat.shots?.total} />
+                    <Stat label="Shots on target" value={stat.shots?.on} />
                   </StatsGroup>
 
                   <StatsGroup title="Passing">
@@ -221,7 +226,9 @@ function StatsGroup({
       <h3 className="mb-2 border-b border-gray-200 pb-1 text-sm font-semibold text-gray-700">
         {title}
       </h3>
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">{children}</div>
+      <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
+        {children}
+      </div>
     </div>
   );
 }

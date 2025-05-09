@@ -12,7 +12,7 @@ export default function Page() {
         <p className="text-xl">
           Breaking news out of London: <br />
           <strong>Coach Lasso</strong> has taken a new job as an analyst for the
-          league he as come to love.
+          league he has come to love.
         </p>
         <p className="mt-4 text-sm">
           Sadly, they still don&apos;t trust Americans, so he&apos;s starting on
