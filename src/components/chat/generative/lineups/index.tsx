@@ -22,7 +22,7 @@ export default function LineupDisplay({ lineups }: { lineups: Lineup[] }) {
   return (
     <Card className="ai-card animate-pop @container relative mr-7 origin-bottom-left gap-4 border-none p-0 font-(family-name:--font-archivo) shadow-none">
       <Tabs defaultValue="formation" className="w-full">
-        <TabsList className="h-auto w-full p-4 pb-0">
+        <TabsList className="h-14 w-full gap-2 p-4 pb-0">
           <TabsTrigger value="formation">Formation</TabsTrigger>
           <TabsTrigger value="list">List</TabsTrigger>
         </TabsList>
@@ -52,6 +52,7 @@ export default function LineupDisplay({ lineups }: { lineups: Lineup[] }) {
                         alt={lineup.team.name}
                         fill
                         className="object-contain"
+                        sizes="(max-width: 8000px) 50px"
                       />
                     </div>
                     <div className="flex flex-1 flex-wrap gap-x-3">

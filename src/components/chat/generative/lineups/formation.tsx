@@ -1,5 +1,6 @@
 import { Lineup, StartingPlayer, TeamColor } from '@/lib/types/football';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 function PlayerCircle({
   player,
@@ -12,29 +13,39 @@ function PlayerCircle({
 }) {
   // Convert hex colors to CSS format
   const primaryColor = `#${colors.primary}`;
-  const numberColor = `#${colors.number}`;
-  const borderColor = `#${colors.border}`;
 
   return (
     <div className="relative flex flex-col items-center gap-1">
       <div
-        className="flex size-8 items-center justify-center rounded-full text-sm font-bold shadow-sm sm:size-10 sm:text-base"
+        className="relative flex size-10 items-center justify-center overflow-hidden rounded-full shadow-sm sm:size-12 md:size-16"
         style={{
-          backgroundColor: primaryColor,
-          color: numberColor,
-          border: `2px solid ${borderColor}`,
+          border: `2px solid ${primaryColor}`,
         }}
       >
-        {player.number}
+        <Image
+          src={
+            `https://media.api-sports.io/football/players/${player.id}.png` ||
+            '/placeholder.svg'
+          }
+          alt={player.name}
+          fill
+          className="object-contain"
+          sizes="(max-width: 8000px) 50px"
+        />
       </div>
       <div
         className={cn(
-          'absolute -bottom-5 hidden truncate text-center text-xs min-[360px]:block sm:-bottom-6 sm:max-w-max sm:text-sm',
-          { 'max-w-14 min-[400px]:max-w-16': truncateName },
+          'absolute -bottom-6 flex gap-0.5 text-center text-xs min-[400px]:gap-1 sm:max-w-max sm:text-sm',
+          { 'max-w-14 min-[410px]:max-w-16': truncateName },
         )}
         title={player.name}
       >
-        {player.name.split(' ').pop()}
+        <span className="min-[370px]:text-muted-foreground max-[370px]:text-sm">
+          {player.number}
+        </span>
+        <span className="hidden truncate min-[370px]:block">
+          {player.name.split(' ').pop()}
+        </span>
       </div>
     </div>
   );
@@ -78,7 +89,7 @@ export default function LineupFormation({
         return (
           <div
             key={`${teamName}-${rowNum}`}
-            className="flex justify-center gap-3 min-[360px]:gap-7 min-[370px]:gap-8 min-[400px]:gap-10 sm:gap-12"
+            className="flex justify-center gap-3 min-[360px]:gap-5 min-[370px]:gap-6 min-[410px]:gap-9 min-[430px]:gap-10 sm:gap-12"
           >
             {row.map((player) => (
               <PlayerCircle

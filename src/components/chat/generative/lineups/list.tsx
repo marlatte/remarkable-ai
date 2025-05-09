@@ -4,6 +4,7 @@ import {
   Substitute,
   TeamColor,
 } from '@/lib/types/football';
+import Image from 'next/image';
 
 function PlayerListItem({
   player,
@@ -14,19 +15,27 @@ function PlayerListItem({
 }) {
   // Convert hex colors to CSS format
   const primaryColor = `#${colors.primary}`;
-  const numberColor = `#${colors.number}`;
-  const borderColor = `#${colors.border}`;
 
   return (
     <div className="bg-muted/20 flex items-center gap-3">
       <div
-        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold shadow-sm"
+        className="relative flex size-10 items-center justify-center overflow-hidden rounded-full shadow-sm"
         style={{
-          backgroundColor: primaryColor,
-          color: numberColor,
-          border: `2px solid ${borderColor}`,
+          border: `2px solid ${primaryColor}`,
         }}
       >
+        <Image
+          src={
+            `https://media.api-sports.io/football/players/${player.id}.png` ||
+            '/placeholder.svg'
+          }
+          alt={player.name}
+          fill
+          className="object-contain"
+          sizes="(max-width: 8000px) 50px"
+        />
+      </div>
+      <div className="text-muted-foreground w-5 shrink-0 text-end">
         {player.number}
       </div>
       <div className="w-max">{player.name}</div>

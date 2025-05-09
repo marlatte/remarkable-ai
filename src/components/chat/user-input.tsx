@@ -4,6 +4,7 @@ import { SendHorizontal } from 'lucide-react';
 import { Input } from '../ui/input';
 import { initialMessages } from '@/lib/init-messages';
 import { RefObject } from 'react';
+import { Label } from '../ui/label';
 
 export default function UserInput({
   inputRef,
@@ -26,15 +27,18 @@ export default function UserInput({
 
   return (
     <form onSubmit={handleSubmit} className="mt-2 flex gap-1">
-      <Input
-        className="scroll-m-4 placeholder-shown:text-ellipsis"
-        value={input}
-        placeholder="Ask about Premier League teams, standings, or fixtures..."
-        onChange={handleInputChange}
-        disabled={isLoading}
-        onFocus={scrollToInput}
-        ref={inputRef}
-      />
+      <Label className="w-full">
+        <span className="sr-only">User Input</span>
+        <Input
+          className="scroll-m-4 placeholder-shown:text-ellipsis"
+          value={input}
+          placeholder="Ask about Premier League teams, standings, or fixtures..."
+          onChange={handleInputChange}
+          disabled={isLoading}
+          onFocus={scrollToInput}
+          ref={inputRef}
+        />
+      </Label>
       <Button
         variant="outline"
         className="group from-background to-muted hover:text-background size-auto bg-linear-to-br text-lg font-semibold transition hover:from-yellow-300 hover:to-pink-500 focus-visible:ring-pink-400 dark:focus-visible:ring-pink-500"
