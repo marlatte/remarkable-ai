@@ -4,6 +4,7 @@ import { useChat } from '@ai-sdk/react';
 import { initialMessages } from '@/lib/init-messages';
 import GenerativeComponents from './generative';
 import ErrorMsg from '../error-msg';
+import { MemoizedMarkdown } from './memoized-md';
 
 export default function Chat() {
   const { messages, status, error, reload } = useChat({
@@ -45,7 +46,9 @@ export default function Chat() {
           <Fragment key={`${message.id}`}>
             {message.content.length > 1 && (
               <ChatBubble.AI ref={isLastMessage ? lastMessageRef : undefined}>
-                <p className="text-lg">{message.content}</p>
+                <div className="prose prose-lg prose-strong:text-current prose-li:marker:text-current/70 prose-neutral text-current">
+                  <MemoizedMarkdown id={message.id} content={message.content} />
+                </div>
               </ChatBubble.AI>
             )}
             <GenerativeComponents chatStatus={status} {...{ message }} />
